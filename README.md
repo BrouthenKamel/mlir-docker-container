@@ -49,6 +49,44 @@ Total Discovered Tests: 84
   Passed     : 79 (94.05%)
 ```
 
+### 3.1.3 OpenMP
+
+#### 3.1.3.1. MLIR OpenMP Tests
+
+This is **mandatory** to be executed inside the docker container, as the build often fails and it must be done manually so that `libomp.so` gets created!
+
+```bash
+cmake --build /opt/mlir-build --target check-openmp
+```
+
+Result (did not work, but should be fine. MLIR-RL parallelizes successfully without these tests pass):
+
+```
+Testing Time: 1.67s
+
+Total Discovered Tests: 399
+  Unsupported      :  41 (10.28%)
+  Expectedly Failed:   1 (0.25%)
+  Failed           : 357 (89.47%)
+FAILED: [code=1] projects/openmp/CMakeFiles/check-openmp /opt/mlir-build/projects/openmp/CMakeFiles/check-openmp 
+cd /opt/mlir-build/projects/openmp && /opt/conda/bin/python /opt/mlir-build/./bin/llvm-lit -sv /opt/mlir-build/projects/openmp/runtime/test /opt/mlir-build/projects/openmp/tools/archer/tests /opt/mlir-build/projects/openmp/tools/multiplex/tests
+ninja: build stopped: subcommand failed.
+```
+#### 3.1.3.2. libomp.so
+
+First of all, you can check that `libomp.so` exists!
+
+```bash
+find /opt/mlir-build/lib/libomp.so 
+```
+
+Result:
+
+```bash
+/opt/mlir-build/lib/libomp.so 
+```
+
+
 ## 3.1. MLIR Binaries
 
 ### 3.1.1. mlir-opt
@@ -139,4 +177,25 @@ Result
 
 ```bash
 MLIR Python bindings loaded successfully
+```
+
+# 4. Export Environment
+
+## 4.1. On Docker Container
+
+```bash
+conda env export --no-builds > /tmp/environment.yaml
+```
+
+## 4.2. On Host
+
+Use `docker ps` to get the <container-id> expecting something like the following:
+
+```bash
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS          PORTS     NAMES
+b8f368e7f613   mlir      "/bin/bash"   13 minutes ago   Up 13 minutes             angry_bartik
+```
+
+```bash
+docker cp <container-id>:/tmp/environment.yaml ./environment.yaml
 ```

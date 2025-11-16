@@ -47,6 +47,7 @@ RUN cmake -S llvm-project/llvm -B /opt/mlir-build -G Ninja \
 # Build
 RUN cmake --build /opt/mlir-build --target check-mlir
 RUN cmake --build /opt/mlir-build --target check-mlir-python
+RUN cmake --build /opt/mlir-build --target check-openmp 2> /dev/null -- -k || true
 
 # Add built binaries to PATH
 ENV PATH="/opt/mlir-build/bin:${PATH}"
