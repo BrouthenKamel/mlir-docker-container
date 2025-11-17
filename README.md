@@ -53,13 +53,11 @@ Total Discovered Tests: 84
 
 #### 3.1.3.1. MLIR OpenMP Tests
 
-This is **mandatory** to be executed inside the docker container, as the build often fails and it must be done manually so that `libomp.so` gets created!
-
 ```bash
 cmake --build /opt/mlir-build --target check-openmp
 ```
 
-Result (did not work, but should be fine. MLIR-RL parallelizes successfully without these tests pass):
+Result (did not work, but should be fine. MLIR-RL parallelizes successfully without these tests pass. As `libomp.so` gets created!):
 
 ```
 Testing Time: 1.67s
